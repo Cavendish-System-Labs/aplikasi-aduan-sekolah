@@ -155,7 +155,39 @@ namespace DOKUMEN_NEGARA
 
             transaction.Commit();
         }
+                //   Get Aspirasi
+        public static DataTable GetSemuaAspirasi()
+        {
+            using var connection = new SqliteConnection(ConnectionString);
+            connection.Open();
 
+            using var command = connection.CreateCommand();
+            command.CommandText = """
+        SELECT
+            a.IdAspirasi,
+            ia.IdPelaporan,
+            ia.NIS,
+            s.Kelas,
+            k.KetKategori AS Kategori,
+            ia.Lokasi,
+            ia.Keterangan,
+            a.Status,
+            a.Feedback
+        FROM Aspirasi AS a
+        INNER JOIN InputAspirasi AS ia
+            ON a.IdPelaporan = ia.IdPelaporan
+        INNER JOIN Siswa AS s
+            ON ia.NIS = s.NIS
+        INNER JOIN Kategori AS k
+            ON ia.IdKategori = k.IdKategori
+        ORDER BY ia.IdPelaporan DESC;
+        """;
 
+            using var reader = command.ExecuteReader();
+
+            var table = new DataTable();
+            table.Load(reader);
+            return table;
+        }
     }
 }

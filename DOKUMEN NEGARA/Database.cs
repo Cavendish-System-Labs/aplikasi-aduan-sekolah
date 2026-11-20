@@ -3,7 +3,7 @@ using System;
 using System.Data;
 using System.IO;
 
-## Database
+## Database Aduan
 namespace DOKUMEN_NEGARA
 {
     internal static class Database
